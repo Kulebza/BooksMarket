@@ -24,7 +24,6 @@ namespace BooksMarket.Controllers
         [Route("get")]
         [HttpGet]
         [ProducesResponseType(typeof(IEnumerable<Book>), 200)]
-        [ProducesResponseType(typeof(IDictionary<string, string>), 400)]
         [ProducesResponseType(500)]        
         public IActionResult Get([FromQuery] Filter filter)
         {
@@ -34,7 +33,7 @@ namespace BooksMarket.Controllers
 
         [Route("create")]
         [HttpPost]
-        [SwaggerResponse(201, "The product was created", typeof(Book))]
+        [ProducesResponseType(typeof(Book), 200)]
         [ProducesResponseType(500)]
         public IActionResult Create([FromBody] BookDto book)
         {
