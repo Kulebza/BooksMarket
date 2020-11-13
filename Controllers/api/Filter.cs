@@ -1,9 +1,10 @@
-﻿using System;
+﻿using BooksMarket.Db.Models;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
 
-namespace BooksMarket
+namespace BooksMarket.Controllers.Api
 {
     public class Filter
     {
@@ -15,10 +16,10 @@ namespace BooksMarket
 
         public string FirstName { get; set; }
 
-        public CoverType Cover { get; set; }
+        public CoverType? Cover { get; set; }
 
-        public CategoryType Category { get; set; }
+        public CategoryType? Category { get; set; }
 
-        public GenreType Genre { get; set; }
+        public GenreType? Genre { get; set; }
     }
 }

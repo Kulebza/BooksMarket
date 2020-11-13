@@ -1,4 +1,4 @@
-﻿namespace BooksMarket
+﻿namespace BooksMarket.Db.Models
 {
     public enum CoverType
     {

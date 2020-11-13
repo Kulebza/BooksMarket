@@ -2,9 +2,11 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
+using BooksMarket.Controllers.Api;
 using BooksMarket.Db.Models;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Logging;
+using Swashbuckle.AspNetCore.Annotations;
 
 namespace BooksMarket.Controllers
 {
@@ -19,29 +21,66 @@ namespace BooksMarket.Controllers
             _bookService = bookService;
         }
 
-        //возвращать код
         [Route("get")]
         [HttpGet]
-        public async Task<IEnumerable<Book>> Get([FromQuery] Filter filter)
+        [ProducesResponseType(typeof(IEnumerable<Book>), 200)]
+        [ProducesResponseType(typeof(IDictionary<string, string>), 400)]
+        [ProducesResponseType(500)]        
+        public IActionResult Get([FromQuery] Filter filter)
         {
-            var books = await _bookService.GetBooks(filter);
-            return books;
+            var books =  _bookService.GetBooks(filter);
+            return Ok(books);
         }
 
         [Route("create")]
-        [HttpPut]
-        public Book Create([FromBody] Book book)
+        [HttpPost]
+        [SwaggerResponse(201, "The product was created", typeof(Book))]
+        [ProducesResponseType(500)]
+        public IActionResult Create([FromBody] BookDto book)
         {
-            var result = _bookService.CreateBook(book);
-            return result;
+            try
+            {
+                var result = _bookService.CreateBook(book);
+                return Ok(result);
+            }
+            catch (BadRequestException ex)
+            {
+                return BadRequest(ex.Message);
+            }
         }
 
-        [Route("edit")]
-        [HttpPost]
-        public async Task<Book> Edit([FromBody] Book book)
+        [Route("editBook")]
+        [HttpPut]
+        [ProducesResponseType(typeof(Book), 200)]
+        [ProducesResponseType(500)]
+        public IActionResult EditBook([FromQuery]Guid id, [FromBody] EditBookDto bookDto)
+        { 
+            try
+            {
+                var result = _bookService.EditBook(id, bookDto);
+                return Ok(result);
+            }
+            catch (BadRequestException ex)
+            {
+                return BadRequest(ex.Message);
+            }            
+        }
+
+        [Route("editAutor")]
+        [HttpPut]
+        [ProducesResponseType(typeof(Autor), 200)]
+        [ProducesResponseType(500)]
+        public IActionResult EditAutor([FromQuery] Guid id, [FromBody] AutorDto autorDto)
         {
-            var result = await _bookService.EditBook(book);
-            return result;
+            try
+            {
+                var result = _bookService.EditAutor(id, autorDto);
+                return Ok(result);
+            }
+            catch (BadRequestException ex)
+            {
+                return BadRequest(ex.Message);
+            }
         }
 
     }

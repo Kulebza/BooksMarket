@@ -1,4 +1,6 @@
-﻿using BooksMarket.Db.Models;
+﻿using BooksMarket.Controllers.Api;
+using BooksMarket.Db.Models;
+using System;
 using System.Collections.Generic;
 using System.Threading.Tasks;
 
@@ -6,10 +8,12 @@ namespace BooksMarket
 {
     public interface IBookService
     {
-        Task<IEnumerable<Book>> GetBooks(Filter filter);
+        IEnumerable<Book> GetBooks(Filter filter);
 
-        Book CreateBook(Book book);
+        Book CreateBook(BookDto book);
 
-        Task<Book> EditBook(Book book);
+        Book EditBook(Guid id, EditBookDto bookDto);
+
+        Autor EditAutor(Guid id, AutorDto autorDto);
     }
 }
